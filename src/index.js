@@ -31,13 +31,13 @@ function run() {
   const rule = Rules.get(ruleId).getUnsafe();
 
   rule.evaluate(page).then((outcomes) => {
-    resultTextarea.innerHTML = JSON.stringify(
-      Sequence.from(outcomes)
-        .map((outcome) => outcome.toJSON())
-        .toJSON(),
-      null,
-      2
-    );
+    for (const outcome of outcomes) {
+      if (outcome.outcome === "failed") {
+        for (const [, expectation] of outcome.expectations) {
+          console.log(`ERR: ${expectation.getErrUnsafe().message}`);
+        }
+      }
+    }
   });
 }
 
