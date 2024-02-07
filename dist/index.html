@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Run Alfa in the Browser</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      h1 {
+        margin-top: 0;
+      }
+
+      textarea,
+      input[type="text"] {
+        display: block;
+        width: 100%;
+        margin-bottom: 20px;
+        padding: 10px;
+        font-size: 16px;
+      }
+
+      button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+
+      textarea#result {
+        height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Run Alfa in the Browser</h1>
+
+      <textarea placeholder="Enter HTML snippet" id="html-snippet"></textarea>
+
+      <input type="text" id="rule-id" placeholder="Enter rule ID" />
+
+      <button id="run-button">Run</button>
+
+      <textarea readonly id="result" rows="50"></textarea>
+
+      <script src="main.js"></script>
+    </div>
+  </body>
+</html>
