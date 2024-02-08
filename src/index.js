@@ -3,42 +3,37 @@ import { Node } from "@siteimprove/alfa-dom";
 import { Page } from "@siteimprove/alfa-web";
 import { Request, Response } from "@siteimprove/alfa-http";
 import { Rules } from "@siteimprove/alfa-rules";
-import { Sequence } from "@siteimprove/alfa-sequence";
 
 import * as dom from "@siteimprove/alfa-dom/native";
 
 const htmlSnippetElement = document.getElementById("html-snippet");
-const ruleIdElement = document.getElementById("rule-id");
 const resultTextarea = document.getElementById("result");
 
 function run() {
-  const element = document.createElement("div");
+  const element = document.getElementById("rendered-html");
   element.innerHTML = htmlSnippetElement.value;
-  const target = element.firstChild;
-  console.log(target);
-  const alfaDocument = Node.from(dom.Native.fromNode(target));
 
-  console.log(alfaDocument.toJSON());
+  console.log(element);
 
-  const page = Page.of(
-    Request.empty(),
-    Response.empty(),
-    alfaDocument,
-    Device.standard()
-  );
+  const alfaDocument = Node.from(dom.Native.fromNode(window.document));
 
-  const ruleId = ruleIdElement.value;
-  const rule = Rules.get(ruleId).getUnsafe();
+  console.log(alfaDocument);
 
-  rule.evaluate(page).then((outcomes) => {
-    for (const outcome of outcomes) {
-      if (outcome.outcome === "failed") {
-        for (const [, expectation] of outcome.expectations) {
-          console.log(`ERR: ${expectation.getErrUnsafe().message}`);
-        }
-      }
-    }
-  });
+  const rule = Rules.get("R64").getUnsafe();
+
+  rule
+    .evaluate(
+      Page.of(
+        Request.empty(),
+        Response.empty(),
+        alfaDocument,
+        Device.standard()
+      )
+    )
+    .then((outcomes) => {
+      console.log(outcomes);
+      resultTextarea.value = JSON.stringify(outcomes, null, 2);
+    });
 }
 
 document.getElementById("run-button").addEventListener("click", run);
