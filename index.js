@@ -24,14 +24,18 @@ async function main() {
     Device.standard()
   );
 
-  const rule = Rules.get("R16").getUnsafe();
+  const rule = Rules.get("R18").getUnsafe();
 
   const outcomes = await rule.evaluate(page);
 
   for (const outcome of outcomes) {
     if (outcome.outcome === "failed") {
       for (const [, expectation] of outcome.expectations) {
-        console.log(`ERR: ${expectation.getErrUnsafe().message}`);
+        if (expectation.isOk()) {
+          console.log(`PASS: ${expectation.getUnsafe().message}`);
+        } else if (expectation.isErr()) {
+          console.log(`FAIL: ${expectation.getErrUnsafe().message}`);
+        }
       }
     }
   }
